@@ -9,7 +9,6 @@
 
   :root {
     --bg: #f5efe4;
-    --bg2: #ebe2d1;
     --ink: #2a2622;
     --ink-soft: #6e655a;
     --accent: #c05621;
@@ -30,7 +29,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Texture giấy cổ */
+  /* Texture giấy toàn cục */
   body::before {
     content: '';
     position: fixed;
@@ -52,7 +51,7 @@
   }
 
   /* ============================================
-     SLIDE — chuyển cảnh cinematic
+     SLIDE
      ============================================ */
   .slide {
     position: absolute;
@@ -65,6 +64,7 @@
     opacity: 0;
     pointer-events: none;
     z-index: 1;
+    overflow: hidden;
   }
   .slide.active {
     visibility: visible;
@@ -73,13 +73,62 @@
     z-index: 2;
   }
 
-  /* Lớp mask trượt — tạo cảm giác "cửa mở" */
+  /* ===== BACKGROUND PATTERN cho từng slide ===== */
+  .slide .bg-decor {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease 0.3s;
+  }
+  .slide.active .bg-decor { opacity: 1; }
+
+  /* Blob mờ trang trí */
+  .slide .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide .blob.b1 { width: 420px; height: 420px; background: #f6c177; top: -120px; right: -80px; }
+  .slide .blob.b2 { width: 360px; height: 360px; background: #e8b04b; bottom: -100px; left: -60px; opacity: 0.25; }
+
+  /* Hoạ tiết lưới chấm / đường kẻ mờ */
+  .pattern-dots {
+    background-image: radial-gradient(circle, rgba(192,86,33,0.14) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
+    opacity: 0.5;
+  }
+  .pattern-lines {
+    background-image:
+      linear-gradient(rgba(192,86,33,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(192,86,33,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .pattern-diag {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(184,134,11,0.06) 0,
+      rgba(184,134,11,0.06) 2px,
+      transparent 2px,
+      transparent 22px
+    );
+  }
+  .pattern-circles {
+    background-image: radial-gradient(circle at center, transparent 58%, rgba(192,86,33,0.07) 59%, rgba(192,86,33,0.07) 60%, transparent 61%);
+    background-size: 80px 80px;
+  }
+
+  /* Lớp mask wipe khi chuyển slide */
   .slide::after {
     content: '';
     position: absolute;
     inset: 0;
     background: var(--bg);
-    z-index: 5;
+    z-index: 8;
     transform-origin: right center;
     transform: scaleX(1);
     pointer-events: none;
@@ -92,7 +141,7 @@
     100% { transform: scaleX(0); transform-origin: right center; }
   }
 
-  /* ===== NỘI DUNG TEXT — trượt theo lớp ===== */
+  /* ===== NỘI DUNG TEXT ===== */
   .content { max-width: 580px; position: relative; z-index: 3; }
 
   .content > * {
@@ -140,11 +189,7 @@
     margin-bottom: 24px;
     color: #1e1a16;
   }
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-    position: relative;
-  }
+  h1 em { font-style: italic; color: var(--accent); position: relative; }
   h1 em::after {
     content: '';
     position: absolute;
@@ -192,10 +237,7 @@
     line-height: 1.55;
     transition: background 0.3s, padding-left 0.3s;
   }
-  .facts li:hover {
-    background: rgba(192,86,33,0.04);
-    padding-left: 8px;
-  }
+  .facts li:hover { background: rgba(192,86,33,0.04); padding-left: 8px; }
   .facts .yr {
     flex: 0 0 92px;
     color: var(--accent);
@@ -239,7 +281,6 @@
     100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
   }
 
-  /* Parallax: SVG bên trong dịch chuyển nhẹ khi hover */
   .frame svg {
     width: 78%;
     height: 78%;
@@ -248,7 +289,6 @@
   }
   .frame:hover svg { transform: scale(1.06) translateY(-4px); }
 
-  /* Viền trang trí góc */
   .frame::before,
   .frame::after {
     content: '';
@@ -332,11 +372,8 @@
   }
   .hud-left .n { color: var(--accent); font-size: 1.1rem; font-weight: 800; }
 
-  .hud-center {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
+  .hud-center { display: flex; align-items: center; gap: 24px; }
+
   .arrow {
     background: var(--card);
     border: 1px solid var(--line);
@@ -424,12 +461,16 @@
 <div class="stage">
 
   <!-- ============================================
-       1. BÌA
+       1. BÌA — nền vòng tròn đồng tâm
        ============================================ -->
   <section class="slide cover active">
+    <div class="bg-decor">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="pattern-circles" style="position:absolute;inset:0;"></div>
+    </div>
     <div class="content">
       <div class="cover-art">
-        <!-- SVG: Bàn tính cách điệu -->
         <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="20" width="160" height="180" rx="8" stroke="#c05621" stroke-width="5" fill="#fff9ee"/>
           <line x1="20" y1="75" x2="180" y2="75" stroke="#b8860b" stroke-width="4"/>
@@ -454,9 +495,13 @@
   </section>
 
   <!-- ============================================
-       2. Đếm bằng tay
+       2. Đếm bằng tay — nền chấm
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-dots" style="position:absolute;inset:0;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương I · Khởi nguyên</div>
       <h2>Đếm bằng <em>đôi tay</em></h2>
@@ -469,7 +514,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Bàn tay đếm -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M60 180 C55 150 50 120 55 90 C58 75 70 72 74 85 L78 110 L78 60 C78 48 92 48 92 60 L92 100 L92 45 C92 33 106 33 106 45 L106 100 L106 55 C106 43 120 43 120 55 L120 105 L120 75 C120 63 134 63 134 75 L134 130 C134 160 140 180 120 190 C95 200 70 195 60 180 Z" fill="#e8b04b" stroke="#c05621" stroke-width="4" stroke-linejoin="round"/>
           <circle cx="72" cy="165" r="4" fill="#c05621"/>
@@ -483,9 +527,13 @@
   </section>
 
   <!-- ============================================
-       3. Xương Ishango
+       3. Xương Ishango — nền đường kẻ
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-lines" style="position:absolute;inset:0;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương I · Khởi nguyên</div>
       <h2>Dấu vết <em>đầu tiên</em></h2>
@@ -498,19 +546,12 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Xương có vạch khắc -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M100 30 C100 20 112 20 112 30 L118 40 C130 45 130 60 118 65 L112 75 L112 145 L118 155 C130 160 130 175 118 180 L112 190 C112 200 100 200 100 190 L94 180 C82 175 82 160 94 155 L100 145 L100 75 L94 65 C82 60 82 45 94 40 Z" fill="#f0e6d2" stroke="#a07a3a" stroke-width="4" stroke-linejoin="round"/>
           <g stroke="#c05621" stroke-width="3" stroke-linecap="round">
-            <line x1="70" y1="80" x2="70" y2="95"/>
-            <line x1="78" y1="78" x2="78" y2="93"/>
-            <line x1="86" y1="76" x2="86" y2="91"/>
-            <line x1="70" y1="110" x2="70" y2="125"/>
-            <line x1="78" y1="108" x2="78" y2="123"/>
-            <line x1="86" y1="106" x2="86" y2="121"/>
-            <line x1="94" y1="104" x2="94" y2="119"/>
-            <line x1="70" y1="140" x2="70" y2="155"/>
-            <line x1="78" y1="138" x2="78" y2="153"/>
+            <line x1="70" y1="80" x2="70" y2="95"/><line x1="78" y1="78" x2="78" y2="93"/><line x1="86" y1="76" x2="86" y2="91"/>
+            <line x1="70" y1="110" x2="70" y2="125"/><line x1="78" y1="108" x2="78" y2="123"/><line x1="86" y1="106" x2="86" y2="121"/><line x1="94" y1="104" x2="94" y2="119"/>
+            <line x1="70" y1="140" x2="70" y2="155"/><line x1="78" y1="138" x2="78" y2="153"/>
           </g>
         </svg>
         <span class="img-label">Xương Ishango</span>
@@ -520,9 +561,13 @@
   </section>
 
   <!-- ============================================
-       4. Bàn tính
+       4. Bàn tính — nền chấm dày
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-dots" style="position:absolute;inset:0;background-size:20px 20px;opacity:0.4;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương II · Cơ học</div>
       <h2>Bàn tính — <em>cỗ máy</em> đầu tiên</h2>
@@ -535,7 +580,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Bàn tính lớn -->
         <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="15" y="15" width="170" height="190" rx="10" stroke="#c05621" stroke-width="6" fill="#fff9ee"/>
           <line x1="15" y1="70" x2="185" y2="70" stroke="#b8860b" stroke-width="5"/>
@@ -547,7 +591,7 @@
             <circle cx="45" cy="175" r="10"/><circle cx="80" cy="175" r="10"/><circle cx="115" cy="175" r="10"/><circle cx="150" cy="175" r="10"/>
           </g>
           <g fill="#b8860b">
-            <circle cx="150" cy="45" r="10"/><circle cx="45" cy="25" r="0"/>
+            <circle cx="150" cy="45" r="10"/>
             <circle cx="115" cy="95" r="10"/><circle cx="150" cy="95" r="10"/>
           </g>
         </svg>
@@ -558,9 +602,13 @@
   </section>
 
   <!-- ============================================
-       5. Lan truyền
+       5. Lan truyền — nền đường chéo
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-diag" style="position:absolute;inset:0;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương II · Cơ học</div>
       <h2>Lan truyền <em>khắp thế giới</em></h2>
@@ -573,7 +621,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Địa cầu + mũi tên -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="110" cy="110" r="75" stroke="#c05621" stroke-width="4" fill="#fff9ee"/>
           <ellipse cx="110" cy="110" rx="30" ry="75" stroke="#b8860b" stroke-width="3"/>
@@ -593,9 +640,13 @@
   </section>
 
   <!-- ============================================
-       6. Logarit & thước tính
+       6. Logarit — nền lưới mảnh
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-lines" style="position:absolute;inset:0;background-size:40px 40px;opacity:0.7;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương III · Phục hưng</div>
       <h2>Logarit & <em>thước tính</em></h2>
@@ -608,27 +659,18 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Thước tính -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="80" width="180" height="26" rx="4" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <rect x="20" y="118" width="180" height="26" rx="4" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <g stroke="#a07a3a" stroke-width="2">
-            <line x1="30" y1="80" x2="30" y2="92"/>
-            <line x1="50" y1="80" x2="50" y2="96"/>
-            <line x1="70" y1="80" x2="70" y2="92"/>
-            <line x1="90" y1="80" x2="90" y2="96"/>
-            <line x1="110" y1="80" x2="110" y2="92"/>
-            <line x1="130" y1="80" x2="130" y2="96"/>
-            <line x1="150" y1="80" x2="150" y2="92"/>
-            <line x1="170" y1="80" x2="170" y2="96"/>
-            <line x1="30" y1="118" x2="30" y2="130"/>
-            <line x1="50" y1="118" x2="50" y2="134"/>
-            <line x1="70" y1="118" x2="70" y2="130"/>
-            <line x1="90" y1="118" x2="90" y2="134"/>
-            <line x1="110" y1="118" x2="110" y2="130"/>
-            <line x1="130" y1="118" x2="130" y2="134"/>
-            <line x1="150" y1="118" x2="150" y2="130"/>
-            <line x1="170" y1="118" x2="170" y2="134"/>
+            <line x1="30" y1="80" x2="30" y2="92"/><line x1="50" y1="80" x2="50" y2="96"/>
+            <line x1="70" y1="80" x2="70" y2="92"/><line x1="90" y1="80" x2="90" y2="96"/>
+            <line x1="110" y1="80" x2="110" y2="92"/><line x1="130" y1="80" x2="130" y2="96"/>
+            <line x1="150" y1="80" x2="150" y2="92"/><line x1="170" y1="80" x2="170" y2="96"/>
+            <line x1="30" y1="118" x2="30" y2="130"/><line x1="50" y1="118" x2="50" y2="134"/>
+            <line x1="70" y1="118" x2="70" y2="130"/><line x1="90" y1="118" x2="90" y2="134"/>
+            <line x1="110" y1="118" x2="110" y2="130"/><line x1="130" y1="118" x2="130" y2="134"/>
+            <line x1="150" y1="118" x2="150" y2="130"/><line x1="170" y1="118" x2="170" y2="134"/>
           </g>
           <line x1="60" y1="70" x2="60" y2="155" stroke="#c05621" stroke-width="3" stroke-dasharray="4 4"/>
         </svg>
@@ -639,9 +681,13 @@
   </section>
 
   <!-- ============================================
-       7. Pascal
+       7. Pascal — nền vòng tròn
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-circles" style="position:absolute;inset:0;background-size:100px 100px;opacity:0.6;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương III · Phục hưng</div>
       <h2>Máy tính <em>của Pascal</em></h2>
@@ -654,21 +700,18 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Bánh răng -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g stroke="#c05621" stroke-width="4" fill="#fff9ee">
             <circle cx="110" cy="110" r="55"/>
             <circle cx="110" cy="110" r="18" fill="#e8b04b"/>
-            <g>
-              <rect x="104" y="30" width="12" height="20" rx="2"/>
-              <rect x="104" y="170" width="12" height="20" rx="2"/>
-              <rect x="30" y="104" width="20" height="12" rx="2"/>
-              <rect x="170" y="104" width="20" height="12" rx="2"/>
-              <rect x="52" y="52" width="12" height="20" rx="2" transform="rotate(-45 58 62)"/>
-              <rect x="156" y="52" width="12" height="20" rx="2" transform="rotate(45 162 62)"/>
-              <rect x="52" y="148" width="12" height="20" rx="2" transform="rotate(45 58 158)"/>
-              <rect x="156" y="148" width="12" height="20" rx="2" transform="rotate(-45 162 158)"/>
-            </g>
+            <rect x="104" y="30" width="12" height="20" rx="2"/>
+            <rect x="104" y="170" width="12" height="20" rx="2"/>
+            <rect x="30" y="104" width="20" height="12" rx="2"/>
+            <rect x="170" y="104" width="20" height="12" rx="2"/>
+            <rect x="52" y="52" width="12" height="20" rx="2" transform="rotate(-45 58 62)"/>
+            <rect x="156" y="52" width="12" height="20" rx="2" transform="rotate(45 162 62)"/>
+            <rect x="52" y="148" width="12" height="20" rx="2" transform="rotate(45 58 158)"/>
+            <rect x="156" y="148" width="12" height="20" rx="2" transform="rotate(-45 162 158)"/>
           </g>
           <circle cx="110" cy="110" r="8" fill="#c05621"/>
         </svg>
@@ -679,9 +722,13 @@
   </section>
 
   <!-- ============================================
-       8. Leibniz
+       8. Leibniz — nền chấm
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-dots" style="position:absolute;inset:0;background-size:30px 30px;opacity:0.35;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương III · Phục hưng</div>
       <h2>Leibniz & <em>máy nhân</em></h2>
@@ -694,19 +741,12 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Hệ nhị phân -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="30" y="40" width="160" height="140" rx="10" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <g font-family="monospace" font-size="28" font-weight="bold" fill="#c05621" text-anchor="middle">
-            <text x="70" y="90">1</text>
-            <text x="110" y="90">0</text>
-            <text x="150" y="90">1</text>
-            <text x="70" y="130">0</text>
-            <text x="110" y="130">1</text>
-            <text x="150" y="130">0</text>
-            <text x="70" y="170">1</text>
-            <text x="110" y="170">1</text>
-            <text x="150" y="170">0</text>
+            <text x="70" y="90">1</text><text x="110" y="90">0</text><text x="150" y="90">1</text>
+            <text x="70" y="130">0</text><text x="110" y="130">1</text><text x="150" y="130">0</text>
+            <text x="70" y="170">1</text><text x="110" y="170">1</text><text x="150" y="170">0</text>
           </g>
           <g stroke="#b8860b" stroke-width="2" opacity="0.5">
             <line x1="50" y1="100" x2="170" y2="100"/>
@@ -720,9 +760,13 @@
   </section>
 
   <!-- ============================================
-       9. Jacquard
+       9. Jacquard — nền đường chéo
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-diag" style="position:absolute;inset:0;background-size:auto;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương IV · Ý tưởng</div>
       <h2>Thẻ đục lỗ & <em>máy dệt</em></h2>
@@ -735,7 +779,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Thẻ đục lỗ -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="30" y="60" width="160" height="100" rx="6" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <g fill="#a07a3a">
@@ -756,9 +799,13 @@
   </section>
 
   <!-- ============================================
-       10. Babbage
+       10. Babbage — nền lưới
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-lines" style="position:absolute;inset:0;background-size:50px 50px;opacity:0.6;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương IV · Ý tưởng</div>
       <h2>Babbage & <em>cỗ máy phân tích</em></h2>
@@ -771,23 +818,16 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Cỗ máy phân tích -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="40" y="130" width="140" height="60" rx="6" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <g stroke="#c05621" stroke-width="3" fill="#e8b04b">
-            <circle cx="70" cy="100" r="22"/>
-            <circle cx="150" cy="100" r="22"/>
-            <circle cx="110" cy="70" r="18"/>
+            <circle cx="70" cy="100" r="22"/><circle cx="150" cy="100" r="22"/><circle cx="110" cy="70" r="18"/>
           </g>
           <g stroke="#a07a3a" stroke-width="2">
-            <line x1="70" y1="130" x2="70" y2="160"/>
-            <line x1="150" y1="130" x2="150" y2="160"/>
-            <line x1="110" y1="130" x2="110" y2="160"/>
+            <line x1="70" y1="130" x2="70" y2="160"/><line x1="150" y1="130" x2="150" y2="160"/><line x1="110" y1="130" x2="110" y2="160"/>
           </g>
           <g fill="#c05621">
-            <rect x="60" y="170" width="20" height="10" rx="2"/>
-            <rect x="100" y="170" width="20" height="10" rx="2"/>
-            <rect x="140" y="170" width="20" height="10" rx="2"/>
+            <rect x="60" y="170" width="20" height="10" rx="2"/><rect x="100" y="170" width="20" height="10" rx="2"/><rect x="140" y="170" width="20" height="10" rx="2"/>
           </g>
         </svg>
         <span class="img-label">Analytical Engine</span>
@@ -797,9 +837,13 @@
   </section>
 
   <!-- ============================================
-       11. Ada Lovelace
+       11. Ada Lovelace — nền vòng tròn
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-circles" style="position:absolute;inset:0;background-size:120px 120px;opacity:0.5;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương IV · Ý tưởng</div>
       <h2>Ada Lovelace — <em>lập trình viên đầu tiên</em></h2>
@@ -812,12 +856,10 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Chân dung cách điệu Ada -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="110" cy="120" rx="48" ry="58" fill="#f0e6d2" stroke="#c05621" stroke-width="4"/>
           <path d="M70 90 C70 50 90 40 110 40 C130 40 150 50 150 90 L150 70 C150 50 130 35 110 35 C90 35 70 50 70 70 Z" fill="#c05621"/>
-          <circle cx="95" cy="105" r="4" fill="#3d3833"/>
-          <circle cx="125" cy="105" r="4" fill="#3d3833"/>
+          <circle cx="95" cy="105" r="4" fill="#3d3833"/><circle cx="125" cy="105" r="4" fill="#3d3833"/>
           <path d="M100 130 Q110 140 120 130" stroke="#c05621" stroke-width="3" fill="none" stroke-linecap="round"/>
           <path d="M78 160 L142 160 L150 190 L70 190 Z" fill="#c05621" opacity="0.85"/>
         </svg>
@@ -828,9 +870,13 @@
   </section>
 
   <!-- ============================================
-       12. ENIAC
+       12. ENIAC — nền chấm dày
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-dots" style="position:absolute;inset:0;background-size:16px 16px;opacity:0.45;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương V · Điện tử</div>
       <h2>ENIAC — <em>bóng đèn thay bánh răng</em></h2>
@@ -843,7 +889,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Tủ máy ENIAC -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="40" y="30" width="140" height="160" rx="8" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <g fill="#e8b04b" stroke="#c05621" stroke-width="2">
@@ -853,8 +898,7 @@
             <circle cx="70" cy="150" r="8"/><circle cx="100" cy="150" r="8"/><circle cx="130" cy="150" r="8"/><circle cx="160" cy="150" r="8"/>
           </g>
           <g stroke="#a07a3a" stroke-width="2">
-            <line x1="60" y1="175" x2="160" y2="175"/>
-            <line x1="60" y1="180" x2="160" y2="180"/>
+            <line x1="60" y1="175" x2="160" y2="175"/><line x1="60" y1="180" x2="160" y2="180"/>
           </g>
         </svg>
         <span class="img-label">ENIAC</span>
@@ -864,9 +908,13 @@
   </section>
 
   <!-- ============================================
-       13. Chip vi xử lý
+       13. Chip — nền đường chéo
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-diag" style="position:absolute;inset:0;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương V · Điện tử</div>
       <h2>Mạch tích hợp & <em>vi xử lý</em></h2>
@@ -879,19 +927,14 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Chip vi xử lý -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="60" y="60" width="100" height="100" rx="8" fill="#3d3833" stroke="#c05621" stroke-width="4"/>
           <rect x="80" y="80" width="60" height="60" rx="4" fill="#e8b04b" stroke="#b8860b" stroke-width="2"/>
           <g stroke="#a07a3a" stroke-width="3">
-            <line x1="80" y1="60" x2="80" y2="45"/><line x1="100" y1="60" x2="100" y2="45"/>
-            <line x1="120" y1="60" x2="120" y2="45"/><line x1="140" y1="60" x2="140" y2="45"/>
-            <line x1="80" y1="160" x2="80" y2="175"/><line x1="100" y1="160" x2="100" y2="175"/>
-            <line x1="120" y1="160" x2="120" y2="175"/><line x1="140" y1="160" x2="140" y2="175"/>
-            <line x1="60" y1="80" x2="45" y2="80"/><line x1="60" y1="100" x2="45" y2="100"/>
-            <line x1="60" y1="120" x2="45" y2="120"/><line x1="60" y1="140" x2="45" y2="140"/>
-            <line x1="160" y1="80" x2="175" y2="80"/><line x1="160" y1="100" x2="175" y2="100"/>
-            <line x1="160" y1="120" x2="175" y2="120"/><line x1="160" y1="140" x2="175" y2="140"/>
+            <line x1="80" y1="60" x2="80" y2="45"/><line x1="100" y1="60" x2="100" y2="45"/><line x1="120" y1="60" x2="120" y2="45"/><line x1="140" y1="60" x2="140" y2="45"/>
+            <line x1="80" y1="160" x2="80" y2="175"/><line x1="100" y1="160" x2="100" y2="175"/><line x1="120" y1="160" x2="120" y2="175"/><line x1="140" y1="160" x2="140" y2="175"/>
+            <line x1="60" y1="80" x2="45" y2="80"/><line x1="60" y1="100" x2="45" y2="100"/><line x1="60" y1="120" x2="45" y2="120"/><line x1="60" y1="140" x2="45" y2="140"/>
+            <line x1="160" y1="80" x2="175" y2="80"/><line x1="160" y1="100" x2="175" y2="100"/><line x1="160" y1="120" x2="175" y2="120"/><line x1="160" y1="140" x2="175" y2="140"/>
           </g>
           <circle cx="110" cy="110" r="6" fill="#c05621"/>
         </svg>
@@ -902,9 +945,13 @@
   </section>
 
   <!-- ============================================
-       14. PC & Internet
+       14. PC — nền lưới
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b1" style="background:#f6c177;"></div>
+      <div class="pattern-lines" style="position:absolute;inset:0;background-size:70px 70px;opacity:0.5;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương VI · Cá nhân</div>
       <h2>Máy tính <em>về nhà</em></h2>
@@ -917,7 +964,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Máy tính để bàn -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="50" y="50" width="120" height="80" rx="6" fill="#fff9ee" stroke="#c05621" stroke-width="4"/>
           <rect x="60" y="60" width="100" height="60" rx="3" fill="#e8b04b" opacity="0.6"/>
@@ -925,9 +971,7 @@
           <rect x="75" y="145" width="70" height="10" rx="3" fill="#c05621"/>
           <rect x="65" y="165" width="90" height="20" rx="3" fill="#f0e6d2" stroke="#a07a3a" stroke-width="2"/>
           <g stroke="#a07a3a" stroke-width="2">
-            <line x1="75" y1="170" x2="145" y2="170"/>
-            <line x1="75" y1="175" x2="145" y2="175"/>
-            <line x1="75" y1="180" x2="145" y2="180"/>
+            <line x1="75" y1="170" x2="145" y2="170"/><line x1="75" y1="175" x2="145" y2="175"/><line x1="75" y1="180" x2="145" y2="180"/>
           </g>
         </svg>
         <span class="img-label">Máy tính cá nhân</span>
@@ -937,9 +981,13 @@
   </section>
 
   <!-- ============================================
-       15. AI & Tương lai
+       15. AI — nền vòng tròn
        ============================================ -->
   <section class="slide">
+    <div class="bg-decor">
+      <div class="blob b2" style="background:#e8b04b;"></div>
+      <div class="pattern-circles" style="position:absolute;inset:0;background-size:90px 90px;opacity:0.55;"></div>
+    </div>
     <div class="content">
       <div class="eyebrow">Chương VII · Tương lai</div>
       <h2>Cỗ máy <em>biết nghĩ</em></h2>
@@ -952,7 +1000,6 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <!-- SVG: Não + mạch -->
         <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M110 40 C75 40 55 65 55 95 C55 115 65 130 80 140 L80 170 C80 178 88 185 96 185 L124 185 C132 185 140 178 140 170 L140 140 C155 130 165 115 165 95 C165 65 145 40 110 40 Z" fill="#f0e6d2" stroke="#c05621" stroke-width="4"/>
           <g stroke="#c05621" stroke-width="3" fill="none" stroke-linecap="round">
@@ -1028,7 +1075,6 @@
     old.classList.remove('active');
     ticks[index].classList.remove('active');
     index = (i + total) % total;
-    // reset animation của slide mới
     const nw = slides[index];
     void nw.offsetWidth;
     nw.classList.add('active');
