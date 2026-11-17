@@ -8,19 +8,20 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #0d0d0f;
-    --bg-soft: #16161a;
-    --ink: #f4f1ea;
-    --ink-dim: #9a978f;
-    --accent: #e8b04b;      /* vàng đồng cổ điển */
-    --accent-soft: #c9933a;
-    --line: rgba(244,241,234,0.12);
+    --bg: #faf6ef;
+    --card: #ffffff;
+    --ink: #2b2b2b;
+    --ink-soft: #6b6558;
+    --accent: #d97706;
+    --accent-soft: #fde68a;
+    --line: #ede5d8;
+    --shadow: 0 10px 30px rgba(120, 90, 40, 0.08);
   }
 
   html, body { height: 100%; }
 
   body {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg);
     color: var(--ink);
     height: 100vh;
@@ -31,14 +32,13 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Nền tĩnh có texture nhẹ */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(1200px 700px at 20% 10%, rgba(232,176,75,0.06), transparent 60%),
-      radial-gradient(900px 600px at 85% 90%, rgba(232,176,75,0.04), transparent 60%);
+      radial-gradient(900px 600px at 10% 0%, rgba(253,230,138,0.35), transparent 60%),
+      radial-gradient(800px 600px at 95% 100%, rgba(217,119,6,0.06), transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
@@ -58,100 +58,94 @@
     display: grid;
     grid-template-columns: 1.05fr 1fr;
     align-items: center;
-    gap: 0;
     padding: 0 7vw;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(28px);
+    transform: translateY(24px);
     transition:
-      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 0.9s;
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0.7s;
   }
   .slide.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     transition:
-      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s linear 0s;
   }
 
-  /* Nội dung text bên trái */
   .content { max-width: 560px; }
 
   .eyebrow {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.32em;
+    font-size: 0.74rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 12px;
+    font-weight: 600;
   }
   .eyebrow::before {
     content: '';
-    width: 34px; height: 1px;
+    width: 32px; height: 2px;
     background: var(--accent);
+    border-radius: 2px;
     display: inline-block;
   }
 
   h1 {
-    font-size: clamp(2.4rem, 5vw, 4.6rem);
-    line-height: 1.02;
-    font-weight: 400;
+    font-size: clamp(2.3rem, 5vw, 4.2rem);
+    line-height: 1.05;
+    font-weight: 800;
     letter-spacing: -0.02em;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
+    color: #1f1d1a;
   }
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+  h1 em { font-style: normal; color: var(--accent); }
 
   h2 {
-    font-size: clamp(1.8rem, 3.4vw, 3rem);
-    line-height: 1.08;
-    font-weight: 400;
+    font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+    line-height: 1.12;
+    font-weight: 800;
     letter-spacing: -0.015em;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+    color: #1f1d1a;
   }
-  h2 em { font-style: italic; color: var(--accent); }
+  h2 em { font-style: normal; color: var(--accent); }
 
   .lede {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 1.02rem;
-    line-height: 1.75;
-    color: var(--ink-dim);
-    max-width: 460px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    max-width: 470px;
   }
 
-  /* Danh sách mốc thời gian */
   .facts {
     list-style: none;
-    margin-top: 30px;
+    margin-top: 26px;
     border-top: 1px solid var(--line);
   }
   .facts li {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
     display: flex;
-    gap: 20px;
-    padding: 13px 0;
+    gap: 18px;
+    padding: 12px 0;
     border-bottom: 1px solid var(--line);
-    font-size: 0.95rem;
-    color: #d8d4cb;
-    line-height: 1.5;
+    font-size: 0.96rem;
+    color: #3d3a34;
+    line-height: 1.55;
   }
   .facts .yr {
-    flex: 0 0 74px;
+    flex: 0 0 88px;
     color: var(--accent);
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
   }
 
-  /* Bên phải: ảnh */
+  /* ===== ẢNH / VISUAL ===== */
   .visual {
     position: relative;
     height: 100%;
@@ -159,81 +153,85 @@
     align-items: center;
     justify-content: center;
   }
-  .visual .frame {
+
+  .frame {
     position: relative;
-    width: min(38vw, 460px);
+    width: min(36vw, 440px);
     aspect-ratio: 4 / 5;
-    border-radius: 6px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.55);
-    transform: translateY(20px) scale(0.97);
+    background: linear-gradient(135deg, #fff7e6, #fde68a);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transform: translateY(16px) scale(0.97);
     opacity: 0;
     transition:
-      transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
-      opacity 1s ease 0.15s;
+      transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+      opacity 0.8s ease 0.15s;
   }
-  .slide.active .visual .frame {
+  .slide.active .frame {
     transform: translateY(0) scale(1);
     opacity: 1;
   }
-  .visual img {
+
+  .frame .emoji {
+    font-size: clamp(5rem, 10vw, 8rem);
+    line-height: 1;
+    filter: drop-shadow(0 8px 16px rgba(120,90,40,0.15));
+  }
+  .frame .img-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a07a3a;
+    font-weight: 600;
+  }
+  /* Nếu bạn muốn chèn ảnh thật, dùng .frame img và xóa .emoji */
+  .frame img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    filter: saturate(0.85) contrast(1.02);
-    transform: scale(1.06);
-    transition: transform 6s ease-out;
   }
-  .slide.active .visual img { transform: scale(1); }
 
-  /* Viền mảnh + caption dưới ảnh */
-  .visual .frame::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(244,241,234,0.18);
-    border-radius: 6px;
-    pointer-events: none;
-  }
   .caption {
     position: absolute;
-    bottom: -34px;
+    bottom: -32px;
     right: 0;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 0.68rem;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-dim);
+    color: #a07a3a;
+    font-weight: 600;
   }
 
-  /* Ảnh bìa to hơn, đặt giữa */
+  /* ===== SLIDE BÌA ===== */
   .slide.cover {
     grid-template-columns: 1fr;
     text-align: center;
     justify-items: center;
   }
   .slide.cover .content {
-    max-width: 760px;
+    max-width: 780px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .slide.cover .eyebrow::before { display: none; }
-  .slide.cover .lede { margin-left: auto; margin-right: auto; }
-  .cover-art {
-    width: clamp(140px, 18vw, 220px);
-    margin-bottom: 34px;
+  .cover-emoji {
+    font-size: clamp(4rem, 9vw, 7rem);
+    margin-bottom: 24px;
     opacity: 0;
-    transform: scale(0.9);
-    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+    transform: scale(0.85);
+    transition: all 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
   }
-  .slide.cover.active .cover-art { opacity: 1; transform: scale(1); }
-  .cover-art img {
-    width: 100%; display: block;
-    filter: saturate(0.8);
-  }
+  .slide.cover.active .cover-emoji { opacity: 1; transform: scale(1); }
 
-  /* ===== Thanh điều hướng dưới ===== */
+  /* ===== HUD ===== */
   .hud {
     position: fixed;
     left: 0; right: 0; bottom: 0;
@@ -241,91 +239,125 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 22px 7vw 26px;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    padding: 18px 7vw 22px;
+    background: linear-gradient(to top, rgba(250,246,239,0.95), rgba(250,246,239,0));
   }
-
   .hud-left {
     display: flex;
     align-items: baseline;
     gap: 6px;
     font-size: 0.82rem;
-    letter-spacing: 0.05em;
-    color: var(--ink-dim);
+    color: var(--ink-soft);
+    font-weight: 600;
   }
-  .hud-left .n { color: var(--ink); font-size: 1.05rem; font-weight: 600; }
+  .hud-left .n { color: var(--accent); font-size: 1.05rem; font-weight: 800; }
   .hud-left .sep { opacity: 0.4; }
 
   .hud-center {
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: 22px;
   }
   .arrow {
-    background: none;
-    border: none;
-    color: var(--ink-dim);
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
     cursor: pointer;
     width: 44px; height: 44px;
     display: grid; place-items: center;
     border-radius: 50%;
-    transition: color 0.3s, background 0.3s, transform 0.3s;
+    transition: all 0.3s;
     font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(120,90,40,0.08);
   }
-  .arrow:hover { color: var(--ink); background: rgba(244,241,234,0.06); transform: scale(1.08); }
+  .arrow:hover {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.08);
+  }
+  .arrow:active { transform: scale(0.95); }
 
-  .ticks { display: flex; gap: 14px; align-items: center; }
+  .ticks { display: flex; gap: 8px; align-items: center; }
   .tick {
-    width: 22px; height: 2px;
-    background: rgba(244,241,234,0.2);
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #e5dcc9;
     cursor: pointer;
-    transition: background 0.4s, width 0.4s;
-    border-radius: 2px;
+    transition: all 0.35s;
   }
-  .tick:hover { background: rgba(244,241,234,0.5); }
-  .tick.active { background: var(--accent); width: 40px; }
+  .tick:hover { background: #d4c6a8; transform: scale(1.25); }
+  .tick.active { background: var(--accent); width: 26px; border-radius: 5px; }
 
   .hud-right {
     font-size: 0.7rem;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--ink-dim);
+    color: var(--ink-soft);
+    font-weight: 600;
   }
 
-  /* Progress line mảnh trên cùng */
   .topline {
     position: fixed;
     top: 0; left: 0;
-    height: 2px;
+    height: 3px;
     background: var(--accent);
     z-index: 11;
-    transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: 0 0 12px rgba(232,176,75,0.5);
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    border-radius: 0 3px 3px 0;
   }
 
-  /* ===== Responsive ===== */
+  /* ===== CARD GRID (dùng cho vài slide) ===== */
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .mini-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 14px rgba(120,90,40,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .mini-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(120,90,40,0.1);
+  }
+  .mini-card .num {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .mini-card .txt { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ===== RESPONSIVE ===== */
   @media (max-width: 860px) {
     .slide {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto;
       align-content: center;
-      gap: 34px;
+      gap: 30px;
       padding: 8vh 8vw 16vh;
     }
     .visual { order: -1; height: auto; }
-    .visual .frame { width: min(58vw, 300px); aspect-ratio: 4/3; }
+    .frame { width: min(58vw, 280px); aspect-ratio: 1/1; }
     .caption { display: none; }
     .content { max-width: 100%; }
     .facts li { font-size: 0.9rem; }
-    .hud { padding: 16px 8vw; }
+    .facts .yr { flex-basis: 74px; }
+    .hud { padding: 14px 8vw; }
     .hud-right { display: none; }
+    .ticks { gap: 6px; }
+    .tick { width: 7px; height: 7px; }
+    .tick.active { width: 20px; }
   }
   @media (max-width: 480px) {
-    .facts .yr { flex-basis: 60px; }
-    .hud-center { gap: 14px; }
-    .ticks { gap: 8px; }
-    .tick { width: 14px; }
-    .tick.active { width: 26px; }
+    .mini-grid { grid-template-columns: 1fr; }
+    .hud-center { gap: 12px; }
   }
 </style>
 </head>
@@ -338,16 +370,14 @@
   <!-- 1. BÌA -->
   <section class="slide cover active">
     <div class="content">
-      <div class="cover-art">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Abacus_6.jpg/400px-Abacus_6.jpg" alt="Bàn tính">
-      </div>
+      <div class="cover-emoji">🧮</div>
       <div class="eyebrow">Lịch sử · Công nghệ</div>
       <h1>Lược sử <em>công cụ</em><br>tính toán</h1>
       <p class="lede">Từ những viên sỏi trên đất đến cỗ máy biết suy nghĩ — hành trình bốn vạn năm của con số.</p>
     </div>
   </section>
 
-  <!-- 2. Ngón tay & xương Ishango -->
+  <!-- 2. Khởi nguyên: đếm bằng tay -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương I · Khởi nguyên</div>
@@ -361,13 +391,35 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Ishango_bone.jpg/500px-Ishango_bone.jpg" alt="Xương Ishango">
-        <span class="caption">Xương Ishango · Bảo tàng Lịch sử Tự nhiên Brussels</span>
+        <span class="emoji">🦴</span>
+        <span class="img-label">Xương Ishango</span>
       </div>
+      <span class="caption">Hiện vật · Bảo tàng Brussels</span>
     </div>
   </section>
 
-  <!-- 3. Bàn tính -->
+  <!-- 3. Xương Ishango chi tiết -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương I · Khởi nguyên</div>
+      <h2>Dấu vết <em>đầu tiên</em></h2>
+      <p class="lede">Xương Ishango, tìm thấy bên bờ hồ Edward (châu Phi), mang những vạch khắc có thể là phép tính hoặc lịch mặt trăng.</p>
+      <ul class="facts">
+        <li><span class="yr">Nguồn gốc</span><span>Xương khỉ đầu chó, khắc bằng công cụ đá</span></li>
+        <li><span class="yr">Ý nghĩa</span><span>Có thể là hệ đếm hoặc quan sát thiên văn</span></li>
+        <li><span class="yr">Giá trị</span><span>Bằng chứng sớm nhất về tư duy số học</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">✏️</span>
+        <span class="img-label">Vết khắc cổ</span>
+      </div>
+      <span class="caption">Minh họa · Ký hiệu đếm</span>
+    </div>
+  </section>
+
+  <!-- 4. Bàn tính -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương II · Cơ học</div>
@@ -381,73 +433,203 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Abacus_6.jpg/500px-Abacus_6.jpg" alt="Bàn tính">
-        <span class="caption">Bàn tính gỗ · Bộ sưu tập tư nhân</span>
+        <span class="emoji">🧮</span>
+        <span class="img-label">Bàn tính gỗ</span>
       </div>
+      <span class="caption">Bộ sưu tập tư nhân</span>
     </div>
   </section>
 
-  <!-- 4. Máy tính cơ học -->
+  <!-- 5. Bàn tính lan truyền -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương II · Cơ học</div>
+      <h2>Lan truyền <em>khắp thế giới</em></h2>
+      <p class="lede">Từ Trung Quốc sang Nhật, sang Nga rồi châu Âu — bàn tính trở thành công cụ tính phổ biến nhất trong hơn hai nghìn năm.</p>
+      <ul class="facts">
+        <li><span class="yr">Thương nhân</span><span>Dùng bàn tính để tính tiền và hàng hóa</span></li>
+        <li><span class="yr">Trường học</span><span>Dạy số học cho trẻ em nhiều thế hệ</span></li>
+        <li><span class="yr">Thế kỷ 20</span><span>Vẫn dùng ở nhiều nơi trước khi máy tính phổ cập</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">🌏</span>
+        <span class="img-label">Bàn tính các nước</span>
+      </div>
+      <span class="caption">Suanpan · Soroban · Schoty</span>
+    </div>
+  </section>
+
+  <!-- 6. Logarit & thước tính -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương III · Phục hưng</div>
-      <h2>Khi phép tính <em>thành máy</em></h2>
-      <p class="lede">Các nhà toán học châu Âu biến bánh răng thành con số — những cỗ máy đầu tiên có thể cộng, trừ, nhân và chia mà không cần bàn tay.</p>
+      <h2>Logarit & <em>thước tính</em></h2>
+      <p class="lede">John Napier phát minh logarit năm 1614, mở đường cho thước tính — công cụ giúp nhân chia nhanh trong hơn 300 năm.</p>
       <ul class="facts">
-        <li><span class="yr">1614</span><span>John Napier công bố logarit</span></li>
-        <li><span class="yr">1642</span><span>Blaise Pascal chế tạo máy tính cộng</span></li>
-        <li><span class="yr">1673</span><span>Gottfried Leibniz hoàn thiện máy nhân</span></li>
+        <li><span class="yr">1614</span><span>Napier công bố logarit</span></li>
+        <li><span class="yr">1622</span><span>William Oughtred chế tạo thước tính</span></li>
+        <li><span class="yr">Đến 1970s</span><span>Thước tính vẫn là công cụ của kỹ sư</span></li>
       </ul>
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pascaline_-_top_view.jpg/500px-Pascaline_-_top_view.jpg" alt="Máy tính Pascal">
-        <span class="caption">Pascaline · Bảo tàng Nghệ thuật và Thủ công Paris</span>
+        <span class="emoji">📏</span>
+        <span class="img-label">Thước tính</span>
       </div>
+      <span class="caption">Slide rule · Thế kỷ 17</span>
     </div>
   </section>
 
-  <!-- 5. Máy tính lập trình -->
+  <!-- 7. Pascal -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương III · Phục hưng</div>
+      <h2>Máy tính <em>của Pascal</em></h2>
+      <p class="lede">Năm 1642, Blaise Pascal — mới 19 tuổi — chế tạo máy tính cộng bằng bánh răng để giúp cha làm việc thuế.</p>
+      <ul class="facts">
+        <li><span class="yr">1642</span><span>Pascaline — máy tính cộng cơ học</span></li>
+        <li><span class="yr">Cơ chế</span><span>Bánh răng và tay quay, không cần điện</span></li>
+        <li><span class="yr">Di sản</span><span>Ngôn ngữ lập trình Pascal đặt theo tên ông</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">⚙️</span>
+        <span class="img-label">Pascaline</span>
+      </div>
+      <span class="caption">Bảo tàng Paris · 1642</span>
+    </div>
+  </section>
+
+  <!-- 8. Leibniz -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương III · Phục hưng</div>
+      <h2>Leibniz & <em>máy nhân</em></h2>
+      <p class="lede">Gottfried Leibniz hoàn thiện máy tính nhân năm 1673, đồng thời phát triển hệ nhị phân — nền tảng của máy tính hiện đại.</p>
+      <ul class="facts">
+        <li><span class="yr">1673</span><span>Máy nhân Leibniz ra đời</span></li>
+        <li><span class="yr">Hệ nhị phân</span><span>Chỉ dùng 0 và 1 — gốc của máy tính số</span></li>
+        <li><span class="yr">Ảnh hưởng</span><span>Ý tưởng được dùng lại trong thế kỷ 20</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">🔢</span>
+        <span class="img-label">Máy nhân Leibniz</span>
+      </div>
+      <span class="caption">Bảo tàng Hannover · 1673</span>
+    </div>
+  </section>
+
+  <!-- 9. Jacquard & thẻ đục lỗ -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương IV · Ý tưởng</div>
-      <h2>Chiếc máy <em>biết nghe lời</em></h2>
-      <p class="lede">Charles Babbage hình dung một cỗ máy không chỉ tính mà còn làm theo chỉ dẫn. Ada Lovelace nhìn ra rằng nó có thể làm được nhiều hơn cả số học.</p>
+      <h2>Thẻ đục lỗ & <em>máy dệt</em></h2>
+      <p class="lede">Năm 1801, Joseph-Marie Jacquard dùng thẻ đục lỗ để điều khiển máy dệt — ý tưởng "lập trình" đầu tiên bằng vật lý.</p>
       <ul class="facts">
-        <li><span class="yr">1801</span><span>Jacquard — máy dệt điều khiển bằng thẻ đục lỗ</span></li>
-        <li><span class="yr">1837</span><span>Babbage thiết kế Analytical Engine</span></li>
-        <li><span class="yr">1843</span><span>Ada Lovelace viết chương trình đầu tiên</span></li>
+        <li><span class="yr">1801</span><span>Máy dệt Jacquard điều khiển bằng thẻ</span></li>
+        <li><span class="yr">Ý tưởng</span><span>Máy làm theo chỉ dẫn ghi trên thẻ</span></li>
+        <li><span class="yr">Di sản</span><span>Tiền thân của thẻ đục lỗ máy tính</span></li>
       </ul>
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Ada_Lovelace_portrait.jpg/500px-Ada_Lovelace_portrait.jpg" alt="Ada Lovelace">
-        <span class="caption">Ada Lovelace · Chân dung, 1836</span>
+        <span class="emoji">🧵</span>
+        <span class="img-label">Máy dệt Jacquard</span>
       </div>
+      <span class="caption">Pháp · 1801</span>
     </div>
   </section>
 
-  <!-- 6. Máy tính điện tử -->
+  <!-- 10. Babbage -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương IV · Ý tưởng</div>
+      <h2>Babbage & <em>cỗ máy phân tích</em></h2>
+      <p class="lede">Charles Babbage thiết kế Analytical Engine năm 1837 — cỗ máy đa năng đầu tiên có thể làm theo chương trình, dù chưa bao giờ hoàn thành.</p>
+      <ul class="facts">
+        <li><span class="yr">1822</span><span>Difference Engine — máy tính bảng số</span></li>
+        <li><span class="yr">1837</span><span>Analytical Engine — máy tính đa năng</span></li>
+        <li><span class="yr">Di sản</span><span>Ý tưởng trước thời đại gần 100 năm</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">🔧</span>
+        <span class="img-label">Analytical Engine</span>
+      </div>
+      <span class="caption">Thiết kế · 1837</span>
+    </div>
+  </section>
+
+  <!-- 11. Ada Lovelace -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương IV · Ý tưởng</div>
+      <h2>Ada Lovelace — <em>lập trình viên đầu tiên</em></h2>
+      <p class="lede">Năm 1843, Ada Lovelace viết chương trình đầu tiên cho Analytical Engine và nhìn ra rằng máy tính có thể làm được nhiều hơn cả số học.</p>
+      <ul class="facts">
+        <li><span class="yr">1843</span><span>Viết chú giải và chương trình đầu tiên</span></li>
+        <li><span class="yr">Tầm nhìn</span><span>Máy có thể tạo nhạc, xử lý ký hiệu</span></li>
+        <li><span class="yr">Di sản</span><span>Ngày Ada Lovelace vinh danh phụ nữ công nghệ</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">👩‍💻</span>
+        <span class="img-label">Ada Lovelace</span>
+      </div>
+      <span class="caption">Chân dung · 1836</span>
+    </div>
+  </section>
+
+  <!-- 12. ENIAC -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương V · Điện tử</div>
-      <h2>Bóng đèn <em>thay bánh răng</em></h2>
-      <p class="lede">Sau chiến tranh, ống chân không và bóng bán dẫn đưa tốc độ tính toán vượt xa mọi giới hạn cơ học trước đó.</p>
+      <h2>ENIAC — <em>bóng đèn thay bánh răng</em></h2>
+      <p class="lede">Năm 1946, ENIAC ra đời với 18.000 ống chân không, nặng 27 tấn — máy tính điện tử đa năng đầu tiên.</p>
       <ul class="facts">
-        <li><span class="yr">1946</span><span>ENIAC — 18.000 ống chân không, nặng 27 tấn</span></li>
-        <li><span class="yr">1958</span><span>Mạch tích hợp ra đời</span></li>
-        <li><span class="yr">1971</span><span>Intel 4004 — vi xử lý thương mại đầu tiên</span></li>
+        <li><span class="yr">1946</span><span>ENIAC hoạt động tại Đại học Pennsylvania</span></li>
+        <li><span class="yr">Quy mô</span><span>18.000 ống chân không, 27 tấn</span></li>
+        <li><span class="yr">Tốc độ</span><span>Nhanh hơn máy cơ học hàng nghìn lần</span></li>
       </ul>
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Eniac.jpg/500px-Eniac.jpg" alt="ENIAC">
-        <span class="caption">ENIAC · Đại học Pennsylvania, 1946</span>
+        <span class="emoji">💡</span>
+        <span class="img-label">ENIAC</span>
       </div>
+      <span class="caption">Đại học Pennsylvania · 1946</span>
     </div>
   </section>
 
-  <!-- 7. PC & Internet -->
+  <!-- 13. Mạch tích hợp & vi xử lý -->
+  <section class="slide">
+    <div class="content">
+      <div class="eyebrow">Chương V · Điện tử</div>
+      <h2>Mạch tích hợp & <em>vi xử lý</em></h2>
+      <p class="lede">Năm 1958, mạch tích hợp ra đời, thu nhỏ hàng nghìn linh kiện vào một chip. Năm 1971, Intel 4004 — vi xử lý thương mại đầu tiên.</p>
+      <ul class="facts">
+        <li><span class="yr">1958</span><span>Jack Kilby chế tạo mạch tích hợp đầu tiên</span></li>
+        <li><span class="yr">1971</span><span>Intel 4004 — vi xử lý thương mại</span></li>
+        <li><span class="yr">Định luật Moore</span><span>Số bóng bán dẫn tăng gấp đôi mỗi 2 năm</span></li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <span class="emoji">🔲</span>
+        <span class="img-label">Chip vi xử lý</span>
+      </div>
+      <span class="caption">Intel 4004 · 1971</span>
+    </div>
+  </section>
+
+  <!-- 14. PC & Internet -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương VI · Cá nhân</div>
@@ -461,13 +643,14 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Apple_Macintosh_128k.jpg/500px-Apple_Macintosh_128k.jpg" alt="Macintosh">
-        <span class="caption">Macintosh 128K · Apple, 1984</span>
+        <span class="emoji">💻</span>
+        <span class="img-label">Máy tính cá nhân</span>
       </div>
+      <span class="caption">Macintosh 128K · 1984</span>
     </div>
   </section>
 
-  <!-- 8. AI & Tương lai -->
+  <!-- 15. AI & Tương lai -->
   <section class="slide">
     <div class="content">
       <div class="eyebrow">Chương VII · Tương lai</div>
@@ -481,9 +664,10 @@
     </div>
     <div class="visual">
       <div class="frame">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/IBM_Q_system_one.jpg/500px-IBM_Q_system_one.jpg" alt="Máy tính lượng tử">
-        <span class="caption">IBM Quantum System One · 2019</span>
+        <span class="emoji">🤖</span>
+        <span class="img-label">AI & Lượng tử</span>
       </div>
+      <span class="caption">IBM Quantum · 2019</span>
     </div>
   </section>
 
@@ -494,7 +678,7 @@
   <div class="hud-left">
     <span class="n" id="cur">01</span>
     <span class="sep">/</span>
-    <span id="tot">08</span>
+    <span id="tot">15</span>
   </div>
   <div class="hud-center">
     <button class="arrow" id="prev" aria-label="Trước">&#8592;</button>
@@ -514,12 +698,15 @@
   const total    = slides.length;
   let index = 0;
 
-  const chapterNames = ['Khởi đầu','Khởi nguyên','Cơ học','Phục hưng','Ý tưởng','Điện tử','Cá nhân','Tương lai'];
+  const chapterNames = [
+    'Khởi đầu','Khởi nguyên','Khởi nguyên','Cơ học','Cơ học',
+    'Phục hưng','Phục hưng','Phục hưng','Ý tưởng','Ý tưởng',
+    'Ý tưởng','Điện tử','Điện tử','Cá nhân','Tương lai'
+  ];
 
   const pad = n => String(n).padStart(2, '0');
   totEl.textContent = pad(total);
 
-  // ticks
   slides.forEach((_, i) => {
     const t = document.createElement('div');
     t.className = 'tick' + (i === 0 ? ' active' : '');
@@ -538,7 +725,6 @@
     slides[index].classList.remove('active');
     ticks[index].classList.remove('active');
     index = (i + total) % total;
-    // ép reflow nhẹ để animation ảnh chạy lại
     void slides[index].offsetWidth;
     slides[index].classList.add('active');
     ticks[index].classList.add('active');
@@ -548,22 +734,19 @@
   document.getElementById('next').addEventListener('click', () => goTo(index + 1));
   document.getElementById('prev').addEventListener('click', () => goTo(index - 1));
 
-  // Bàn phím
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); goTo(index + 1); }
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp') { e.preventDefault(); goTo(index - 1); }
   });
 
-  // Cuộn chuột (có khóa)
   let wheelLock = false;
   document.addEventListener('wheel', e => {
     if (wheelLock || Math.abs(e.deltaY) < 20) return;
     wheelLock = true;
     e.deltaY > 0 ? goTo(index + 1) : goTo(index - 1);
-    setTimeout(() => wheelLock = false, 1000);
+    setTimeout(() => wheelLock = false, 900);
   }, { passive: true });
 
-  // Vuốt cảm ứng
   let sx = 0, sy = 0;
   document.addEventListener('touchstart', e => {
     sx = e.touches[0].clientX; sy = e.touches[0].clientY;
